@@ -6,6 +6,9 @@ import 'package:mvvm/models/dog.dart';
 class WebService {
   Future getDataToServer() async {
     Uri uri = Uri.parse('https://random.dog/woof.json');
+
+    //Provider.of<LoadingViewModel>(context)
+
     http.Response _response = await http.get(uri);
 
     if (_response.statusCode == 200) {

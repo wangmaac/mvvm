@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mvvm/view_model/dog_view_model.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +15,13 @@ class Application extends StatelessWidget {
       GoRoute(path: '/', builder: (context, state) => Home()),
     ]);
 
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     return MultiProvider(
-        providers: [ChangeNotifierProvider(create: (_) => DogViewModel())],
+        providers: [
+          ChangeNotifierProvider(create: (_) => DogViewModel()),
+        ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           routeInformationParser: _goRouter.routeInformationParser,

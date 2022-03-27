@@ -14,7 +14,6 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
 
   @override
   void initState() {
-    print(widget.source);
     _controller = VideoPlayerController.network(widget.source);
 
     _controller.addListener(() {
@@ -38,14 +37,9 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(top: 20.0),
-          ),
-          DefaultTextStyle(
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              child: Text(extent)),
-          Container(
-            padding: const EdgeInsets.all(20),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 2,
             child: AspectRatio(
               aspectRatio: _controller.value.aspectRatio,
               child: Stack(
