@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -24,11 +25,12 @@ class DownloadRepository {
         name: getFileName());
     print(result.toString());
     if (result['isSuccess']) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('갤러리에 저장되었습니다.')));
-    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('실패했습니다. ${result['errorMessage']}')));
+          SnackBar(content: Text(AppLocalizations.of(context)!.saved)));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              '${AppLocalizations.of(context)!.failed}. ${result['errorMessage']}')));
     }
   }
 
@@ -39,11 +41,12 @@ class DownloadRepository {
     await Dio().download(fileUrl, savePath);
     final result = await ImageGallerySaver.saveFile(savePath);
     if (result['isSuccess']) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('갤러리에 저장되었습니다.')));
-    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('실패했습니다. ${result['errorMessage']}')));
+          SnackBar(content: Text(AppLocalizations.of(context)!.saved)));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              '${AppLocalizations.of(context)!.failed}. ${result['errorMessage']}')));
     }
   }
 
@@ -56,11 +59,12 @@ class DownloadRepository {
     });
     final result = await ImageGallerySaver.saveFile(savePath);
     if (result['isSuccess']) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('갤러리에 저장되었습니다.')));
-    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('실패했습니다. ${result['errorMessage']}')));
+          SnackBar(content: Text(AppLocalizations.of(context)!.saved)));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              '${AppLocalizations.of(context)!.failed}. ${result['errorMessage']}')));
     }
   }
 }

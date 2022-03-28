@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mvvm/view_model/dog_view_model.dart';
 import 'package:provider/provider.dart';
@@ -23,9 +24,12 @@ class Application extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => DogViewModel()),
         ],
         child: MaterialApp.router(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           debugShowCheckedModeBanner: false,
           routeInformationParser: _goRouter.routeInformationParser,
           routerDelegate: _goRouter.routerDelegate,
+          locale: Locale('ko'),
           theme: ThemeData(
             //primarySwatch: Colors.black,
             primaryColor: Colors.black,

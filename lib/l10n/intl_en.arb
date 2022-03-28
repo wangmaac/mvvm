@@ -1,0 +1,12 @@
+{
+  "next" : "NEXT",
+  "save" : " Save",
+  "saving" : "Saving...",
+  "extension" : "ExtName",
+  "size" : "FileSize",
+  "byte" : "Byte",
+  "loading" : "Loading...",
+  "title" : "Bow... Wow...",
+  "saved" : "It has been saved in the gallery",
+  "failed" : "Failed to save"
+}

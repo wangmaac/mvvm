@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mvvm/presentations/video.dart';
 import 'package:mvvm/view_model/dog_view_model.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -38,16 +39,15 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     double ratio = MediaQuery.of(context).size.width /
         (MediaQuery.of(context).size.height / 2);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.pink.shade100,
-        title: const Text('뭥... 뭥...'),
+        title: Text(AppLocalizations.of(context)!.title),
         centerTitle: true,
         actions: [
           isSaving
-              ? Center(child: Text('Saving...'))
+              ? Center(child: Text(AppLocalizations.of(context)!.saving))
               : IconButton(
                   onPressed: () {
                     setState(() {
@@ -88,7 +88,8 @@ class _HomeState extends State<Home> {
                                   if (chunkEvent == null) return widget;
                                   return Center(
                                       child: Center(
-                                    child: Text('Loading....'),
+                                    child: Text(
+                                        AppLocalizations.of(context)!.loading),
                                   ));
                                 },
                                 errorBuilder: (context, object, trace) {
@@ -114,9 +115,9 @@ class _HomeState extends State<Home> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        '확장자명 : ${Provider.of<DogViewModel>(context, listen: false).extensionName.toLowerCase()}'),
+                                        '${AppLocalizations.of(context)!.extension} : ${Provider.of<DogViewModel>(context, listen: false).extensionName.toLowerCase()}'),
                                     Text(
-                                        '파일사이즈 : ${Provider.of<DogViewModel>(context, listen: false).myDog!.fileSizeBytes.toString()}byte'),
+                                        '${AppLocalizations.of(context)!.size} : ${Provider.of<DogViewModel>(context, listen: false).myDog!.fileSizeBytes.toString()}${AppLocalizations.of(context)!.byte}'),
                                   ],
                                 ),
                               ),
@@ -152,8 +153,8 @@ class _HomeState extends State<Home> {
                 color: Colors.black,
                 size: 30,
               ),
-              label: const Text(
-                '다음',
+              label: Text(
+                '${AppLocalizations.of(context)!.next}',
                 style: TextStyle(color: Colors.black, fontSize: 20),
               ),
               style: ButtonStyle(
