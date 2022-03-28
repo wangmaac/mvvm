@@ -154,7 +154,7 @@ class _HomeState extends State<Home> {
                 size: 30,
               ),
               label: Text(
-                '${AppLocalizations.of(context)!.next}',
+                AppLocalizations.of(context)!.next,
                 style: TextStyle(color: Colors.black, fontSize: 20),
               ),
               style: ButtonStyle(
