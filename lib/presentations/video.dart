@@ -34,25 +34,21 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     String extent = widget.source.split('.').last.toString();
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 2,
-            child: AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: <Widget>[
-                  VideoPlayer(_controller),
-                  VideoProgressIndicator(_controller, allowScrubbing: true),
-                ],
-              ),
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: <Widget>[
+                VideoPlayer(_controller),
+                VideoProgressIndicator(_controller, allowScrubbing: true),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

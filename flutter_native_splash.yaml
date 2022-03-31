@@ -1,5 +1,5 @@
 flutter_native_splash:
-  color: "#f8bbd0"
+  color: "#000000"
   #background_image: "assets/images/splash_image.png"
 
   # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing

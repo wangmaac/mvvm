@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:mvvm/presentations/video.dart';
 import 'package:mvvm/view_model/dog_view_model.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -16,9 +17,12 @@ class _HomeState extends State<Home> {
   bool isDone = false;
   bool isSaving = false;
 
+  late NumberFormat df;
+
   @override
   void initState() {
     init();
+    df = NumberFormat('###,###,###,###');
     _requestPermission();
     super.initState();
   }
@@ -32,17 +36,15 @@ class _HomeState extends State<Home> {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
     ].request();
-    print(statuses[Permission.storage].toString());
   }
 
   @override
   Widget build(BuildContext context) {
-    double ratio = MediaQuery.of(context).size.width /
-        (MediaQuery.of(context).size.height / 2);
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.pink.shade100,
+        backgroundColor: Colors.black,
         title: Text(AppLocalizations.of(context)!.title),
         centerTitle: true,
         actions: [
@@ -61,81 +63,72 @@ class _HomeState extends State<Home> {
                       });
                     });
                   },
-                  icon: const Icon(Icons.save))
+                  icon: const Icon(
+                    Icons.download,
+                  ))
         ],
       ),
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / 2,
-                child: Provider.of<DogViewModel>(context).myDog != null &&
-                        isDone
-                    ? Stack(
-                        children: [
-                          Center(
-                            child: AspectRatio(
-                              aspectRatio: ratio,
-                              child: Image.network(
+            Provider.of<DogViewModel>(context).myDog != null && isDone
+                ? Expanded(
+                    child: Image.network(
+                      Provider.of<DogViewModel>(context).myDog!.url,
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.low,
+                      width: double.infinity,
+                      height: 500,
+                      loadingBuilder: (context, widget, chunkEvent) {
+                        if (chunkEvent == null) return widget;
+                        return Center(
+                            child: Center(
+                          child: Text(AppLocalizations.of(context)!.loading),
+                        ));
+                      },
+                      errorBuilder: (context, object, trace) {
+                        return Center(
+                          child: MyVideoPlayer(
+                            source:
                                 Provider.of<DogViewModel>(context).myDog!.url,
-                                fit: BoxFit.cover,
-                                filterQuality: FilterQuality.low,
-                                width: double.infinity,
-                                height: MediaQuery.of(context).size.height / 2,
-                                cacheHeight: 720,
-                                loadingBuilder: (context, widget, chunkEvent) {
-                                  if (chunkEvent == null) return widget;
-                                  return Center(
-                                      child: Center(
-                                    child: Text(
-                                        AppLocalizations.of(context)!.loading),
-                                  ));
-                                },
-                                errorBuilder: (context, object, trace) {
-                                  return MyVideoPlayer(
-                                    source: Provider.of<DogViewModel>(context)
-                                        .myDog!
-                                        .url,
-                                  );
-                                },
-                              ),
-                            ),
                           ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              height: 50,
-                              width: double.infinity,
-                              color: Colors.black.withOpacity(0.3),
-                              child: DefaultTextStyle(
-                                style: const TextStyle(color: Colors.white),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        '${AppLocalizations.of(context)!.extension} : ${Provider.of<DogViewModel>(context, listen: false).extensionName.toLowerCase()}'),
-                                    Text(
-                                        '${AppLocalizations.of(context)!.size} : ${Provider.of<DogViewModel>(context, listen: false).myDog!.fileSizeBytes.toString()}${AppLocalizations.of(context)!.byte}'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
+                        );
+                      },
+                    ),
+                  )
+                : Expanded(
+                    child: Center(
+                        child: CircularProgressIndicator.adaptive(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.pink.shade100),
+                    )),
+                  ),
+            //todo description widget
+            Provider.of<DogViewModel>(context).myDog != null && isDone
+                ? Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    height: 50,
+                    width: double.infinity,
+                    color: Colors.black.withOpacity(0.3),
+                    child: DefaultTextStyle(
+                      style: const TextStyle(color: Colors.white),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              '${AppLocalizations.of(context)!.extension} : ${Provider.of<DogViewModel>(context, listen: false).extensionName.toLowerCase()}'),
+                          Text(
+                              '${AppLocalizations.of(context)!.size} : ${df.format((Provider.of<DogViewModel>(context, listen: false).myDog!.fileSizeBytes / 1024).ceil())} ${AppLocalizations.of(context)!.byte}'),
                         ],
-                      )
-                    : SizedBox(
-                        child: Center(
-                            child: CircularProgressIndicator.adaptive(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.pink.shade100),
-                        )),
-                        width: double.infinity,
-                        height: 300,
-                      )),
+                      ),
+                    ),
+                  )
+                : const SizedBox(
+                    height: 50,
+                  ),
             const SizedBox(height: 30),
-            OutlinedButton.icon(
+            OutlinedButton(
               onPressed: () {
                 setState(() {
                   isDone = false;
@@ -148,36 +141,36 @@ class _HomeState extends State<Home> {
                   });
                 });
               },
-              icon: const Icon(
-                Icons.navigate_next,
-                color: Colors.black,
-                size: 30,
-              ),
-              label: Text(
-                AppLocalizations.of(context)!.next,
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
+              child: Center(child: Image.asset('assets/images/right_icon.png')),
               style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsets>(
-                    const EdgeInsets.fromLTRB(10, 10, 20, 10)),
-                elevation: MaterialStateProperty.all<double>(2.0),
-                shadowColor:
-                    MaterialStateProperty.all<Color>(Colors.pink.shade100),
-                foregroundColor:
-                    MaterialStateProperty.all<Color>(Colors.pink.shade100),
-                overlayColor:
-                    MaterialStateProperty.all<Color>(Colors.pink.shade100),
-                backgroundColor: MaterialStateProperty.resolveWith(
-                  (states) {
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                      const EdgeInsets.fromLTRB(10, 10, 10, 10)),
+                  fixedSize: MaterialStateProperty.all<Size>(
+                      const Size.fromHeight(60)),
+                  elevation: MaterialStateProperty.all<double>(0.0),
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                    (states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.white38;
+                      } else {
+                        return Colors.yellow;
+                      }
+                    },
+                  ),
+                  side: MaterialStateProperty.resolveWith<BorderSide>((states) {
                     if (states.contains(MaterialState.pressed)) {
-                      return Colors.pink.shade100;
+                      return const BorderSide(color: Colors.white);
                     } else {
-                      return Colors.white;
+                      return const BorderSide(color: Colors.black);
                     }
-                  },
-                ),
-              ),
+                  }),
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)))),
             ),
+            const SizedBox(
+              height: 100,
+            )
           ],
         ),
       ),

@@ -22,7 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "byte": MessageLookupByLibrary.simpleMessage("Byte"),
+        "byte": MessageLookupByLibrary.simpleMessage("KByte"),
         "extension": MessageLookupByLibrary.simpleMessage("ExtName"),
         "failed": MessageLookupByLibrary.simpleMessage("Failed to save"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),

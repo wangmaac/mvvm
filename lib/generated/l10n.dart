@@ -100,10 +100,10 @@ class S {
     );
   }
 
-  /// `Byte`
+  /// `KByte`
   String get byte {
     return Intl.message(
-      'Byte',
+      'KByte',
       name: 'byte',
       desc: '',
       args: [],

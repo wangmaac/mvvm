@@ -4,9 +4,9 @@
   "saving" : "저장중...",
   "extension" : "확장자명",
   "size" : "파일사이즈",
-  "byte" : "바이트",
+  "byte" : "KByte",
   "loading" : "로딩중...",
-  "title" : "뭥...뭥...",
+  "title" : "",
   "saved" : "갤러리에 저장되었습니다.",
   "failed" : "실패했습니다."
 }

@@ -22,7 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "byte": MessageLookupByLibrary.simpleMessage("바이트"),
+        "byte": MessageLookupByLibrary.simpleMessage("KByte"),
         "extension": MessageLookupByLibrary.simpleMessage("확장자명"),
         "failed": MessageLookupByLibrary.simpleMessage("실패했습니다."),
         "loading": MessageLookupByLibrary.simpleMessage("로딩중..."),
@@ -31,6 +31,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("갤러리에 저장되었습니다."),
         "saving": MessageLookupByLibrary.simpleMessage("저장중..."),
         "size": MessageLookupByLibrary.simpleMessage("파일사이즈"),
-        "title": MessageLookupByLibrary.simpleMessage("뭥...뭥...")
+        "title": MessageLookupByLibrary.simpleMessage("")
       };
 }
