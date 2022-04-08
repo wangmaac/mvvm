@@ -36,7 +36,7 @@ class Application extends StatelessWidget {
             //primarySwatch: Colors.black,
             primaryColor: Colors.black,
             visualDensity: VisualDensity.adaptivePlatformDensity,
-            backgroundColor: Colors.pink,
+            backgroundColor: Colors.black,
           ),
           //darkTheme: ThemeData.dark(),
         ));

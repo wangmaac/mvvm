@@ -41,10 +41,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xff2D3344),
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xff2D3344),
         title: Text(AppLocalizations.of(context)!.title),
         centerTitle: true,
         actions: [
@@ -73,43 +73,60 @@ class _HomeState extends State<Home> {
           children: [
             Provider.of<DogViewModel>(context).myDog != null && isDone
                 ? Expanded(
-                    child: Image.network(
-                      Provider.of<DogViewModel>(context).myDog!.url,
-                      fit: BoxFit.cover,
-                      filterQuality: FilterQuality.low,
-                      width: double.infinity,
-                      height: 500,
-                      loadingBuilder: (context, widget, chunkEvent) {
-                        if (chunkEvent == null) return widget;
-                        return Center(
-                            child: Center(
-                          child: Text(AppLocalizations.of(context)!.loading),
-                        ));
-                      },
-                      errorBuilder: (context, object, trace) {
-                        return Center(
-                          child: MyVideoPlayer(
-                            source:
-                                Provider.of<DogViewModel>(context).myDog!.url,
-                          ),
-                        );
-                      },
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, right: 20, bottom: 20),
+                      child: GestureDetector(
+                        onHorizontalDragUpdate: (_) {
+                          if (_.delta.dx < -50) {
+                            buttonClick();
+                          }
+                        },
+                        child: Image.network(
+                          Provider.of<DogViewModel>(context).myDog!.url,
+                          fit: BoxFit.cover,
+                          filterQuality: FilterQuality.low,
+                          width: double.infinity,
+                          height: 500,
+                          loadingBuilder: (context, widget, chunkEvent) {
+                            if (chunkEvent == null) return widget;
+                            return Center(
+                                child: Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.loading,
+                                style: const TextStyle(
+                                    fontSize: 30, color: Colors.white),
+                              ),
+                            ));
+                          },
+                          errorBuilder: (context, object, trace) {
+                            return Center(
+                              child: MyVideoPlayer(
+                                source: Provider.of<DogViewModel>(context)
+                                    .myDog!
+                                    .url,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   )
-                : Expanded(
+                : const Expanded(
+                    flex: 4,
                     child: Center(
                         child: CircularProgressIndicator.adaptive(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.pink.shade100),
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     )),
                   ),
             //todo description widget
             Provider.of<DogViewModel>(context).myDog != null && isDone
                 ? Container(
-                    padding: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 20),
                     height: 50,
                     width: double.infinity,
-                    color: Colors.black.withOpacity(0.3),
+                    color: const Color(0xff2D3344),
                     child: DefaultTextStyle(
                       style: const TextStyle(color: Colors.white),
                       child: Column(
@@ -117,9 +134,12 @@ class _HomeState extends State<Home> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              '${AppLocalizations.of(context)!.extension} : ${Provider.of<DogViewModel>(context, listen: false).extensionName.toLowerCase()}'),
+                            '${AppLocalizations.of(context)!.extension} : ${Provider.of<DogViewModel>(context, listen: false).extensionName.toLowerCase()},',
+                            style: const TextStyle(fontSize: 18),
+                          ),
                           Text(
-                              '${AppLocalizations.of(context)!.size} : ${df.format((Provider.of<DogViewModel>(context, listen: false).myDog!.fileSizeBytes / 1024).ceil())} ${AppLocalizations.of(context)!.byte}'),
+                              '${AppLocalizations.of(context)!.size} : ${df.format((Provider.of<DogViewModel>(context, listen: false).myDog!.fileSizeBytes / 1024).ceil())} ${AppLocalizations.of(context)!.byte}',
+                              style: const TextStyle(fontSize: 18)),
                         ],
                       ),
                     ),
@@ -128,49 +148,44 @@ class _HomeState extends State<Home> {
                     height: 50,
                   ),
             const SizedBox(height: 30),
-            OutlinedButton(
-              onPressed: () {
-                setState(() {
-                  isDone = false;
-                });
-                Provider.of<DogViewModel>(context, listen: false)
-                    .call()
-                    .then((value) {
-                  setState(() {
-                    isDone = true;
-                  });
-                });
-              },
-              child: Center(child: Image.asset('assets/images/right_icon.png')),
-              style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsets>(
-                      const EdgeInsets.fromLTRB(10, 10, 10, 10)),
-                  fixedSize: MaterialStateProperty.all<Size>(
-                      const Size.fromHeight(60)),
-                  elevation: MaterialStateProperty.all<double>(0.0),
-                  backgroundColor: MaterialStateProperty.resolveWith(
-                    (states) {
-                      if (states.contains(MaterialState.pressed)) {
-                        return Colors.white38;
-                      } else {
-                        return Colors.yellow;
-                      }
-                    },
-                  ),
-                  side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return const BorderSide(color: Colors.white);
-                    } else {
-                      return const BorderSide(color: Colors.black);
-                    }
-                  }),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)))),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: OutlinedButton(
+                  onPressed: () {
+                    buttonClick();
+                  },
+                  child: Center(
+                      child: Image.asset('assets/images/right_icon.png')),
+                  style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.fromLTRB(10, 10, 10, 10)),
+                      fixedSize: MaterialStateProperty.all<Size>(
+                          const Size.fromHeight(60)),
+                      elevation: MaterialStateProperty.all<double>(0.0),
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                        (states) {
+                          if (states.contains(MaterialState.pressed)) {
+                            return Colors.white38;
+                          } else {
+                            return const Color(0xff424B5D);
+                          }
+                        },
+                      ),
+                      side: MaterialStateProperty.resolveWith<BorderSide>(
+                          (states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return const BorderSide(color: Colors.white);
+                        } else {
+                          return const BorderSide(color: Colors.grey);
+                        }
+                      }),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)))),
+                ),
+              ),
             ),
-            const SizedBox(
-              height: 100,
-            )
           ],
         ),
       ),
@@ -186,6 +201,17 @@ class _HomeState extends State<Home> {
           isDone = true;
         });
       }
+    });
+  }
+
+  void buttonClick() {
+    setState(() {
+      isDone = false;
+    });
+    Provider.of<DogViewModel>(context, listen: false).call().then((value) {
+      setState(() {
+        isDone = true;
+      });
     });
   }
 }
